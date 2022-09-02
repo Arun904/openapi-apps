@@ -1,0 +1,74 @@
+# Using API Calls to Authenticate/Get/Set host/IP/Firewall Rules/ in Sophos firewall:
+(a) Make Sure that sophos firewall access available with your machine and shuffle workflow as well.
+(b) Check with Curl Command to Access with API:
+
+#Authentication Sophos firewall through API :
+
+curl --insecure "https://172.16.16.16:4444/webconsole/APIController" -d 'reqxml=<Request><Login><Username>admin</Username><Password>xxxxxxx</Password></Login></Request>' -v
+The verbose output should look like:
+*   Trying 172.16.16.16:4444...
+* Connected to 172.16.16.16 (172.16.16.16) port 4444 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* TLSv1.0 (OUT), TLS header, Certificate Status (22):
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Certificate (11):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Server finished (14):
+* TLSv1.2 (OUT), TLS header, Certificate Status (22):
+* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+* TLSv1.2 (OUT), TLS header, Finished (20):
+* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.2 (OUT), TLS header, Certificate Status (22):
+* TLSv1.2 (OUT), TLS handshake, Finished (20):
+* TLSv1.2 (IN), TLS header, Finished (20):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Finished (20):
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
+* ALPN, server accepted to use http/1.1
+* Server certificate:
+*  subject: C=NA; ST=NA; L=NA; O=NA; OU=NA; CN=Appliance_Certificate_QlshGVoHUAxHRaM; emailAddress=na@example.com
+*  start date: Aug  1 00:00:00 2015 GMT
+*  expire date: Dec 31 23:59:59 2036 GMT
+*  issuer: C=NA; ST=NA; L=NA; O=NA; OU=NA; CN=Default_CA_QlshGVoHUAxHRaM; emailAddress=na@example.com
+*  SSL certificate verify result: self-signed certificate in certificate chain (19), continuing anyway.
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+> POST /webconsole/APIController HTTP/1.1
+> Host: 172.16.16.16:4444
+> User-Agent: curl/7.81.0
+> Accept: */*
+> Content-Length: 98
+> Content-Type: application/x-www-form-urlencoded
+> 
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Tue, 30 Aug 2022 16:20:07 GMT
+< Server: xxxx
+< X-Frame-Options: SAMEORIGIN
+< Strict-Transport-Security: max-age=31536000
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Type: text/xml;  charset=UTF-8
+< Cache-Control: max-age=2592000
+< Expires: Thu, 29 Sep 2022 16:20:07 GMT
+< Transfer-Encoding: chunked
+< 
+<?xml version="1.0" encoding="UTF-8"?>
+<Response APIVersion="1900.1" IPS_CAT_VER="0">
+  <Login>
+    <status>Authentication Successful</status>
+  </Login>
+</Response>
+* Connection #0 to host 172.16.16.16 left intact
+
+#Set Operation [Add a host IP]
+<Set operation="add"><IPHost><Name>CustomIPHostTypeIPV4</Name><IPFamily>Ipv4</IPFamily><HostType>IP</HostType><IPAddress>xxxxxxxxx</IPAddress></IPHost></Set>
+
+#Get Operation [Get the host IP with like criteria]
+<Get><IPHost><Filter><key name="Name" criteria="like">CustomIPHostTypeIPV4</key></Filter></IPHost></Get>
